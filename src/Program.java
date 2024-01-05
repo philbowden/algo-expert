@@ -7,17 +7,23 @@ class Program {
     public static int levenshteinDistance(String str1, String str2) {
         int[][] dpDistance = new int[str1.length() + 1][str2.length() +1];
 
-        for (int i = 0; i < str2.length() + 1; i++)
-            dpDistance[0][i] = i;
-        for (int i = 0; i < str1.length() + 1; i++)
-            dpDistance[i][0] = i;
+        for (int row = 0; row < str2.length() + 1; row++)
+            dpDistance[0][row] = row;
+        for (int col = 0; col < str1.length() + 1; col++)
+            dpDistance[col][0] = col;
 
-        for (int i = 1; i < str1.length() + 1; i++) {
-            for (int j = 1; j < str2.length() + 1; j++) {
-                if (str2.charAt(j-1) == str1.charAt(i-1)) {
-                    dpDistance[i][j] = dpDistance[i-1][j-1];
+        for (int row = 1; row < str1.length() + 1; row++) {
+            for (int col = 1; col < str2.length() + 1; col++) {
+                char prevCol = str2.charAt(col-1);
+                char prevRow = str1.charAt(row-1);
+                if (prevCol == prevRow) {
+                    dpDistance[row][col] = dpDistance[row-1][col-1];
                 } else {
-                    dpDistance[i][j] = 1 + Math.min(dpDistance[i-1][j-1], Math.min(dpDistance[i][j-1], Math.min(dpDistance[i][j-1], dpDistance[i-1][j])));
+                    //take smallest from previous upper, lower, or diagonal value and add 1.
+                    int upperVal = dpDistance[row-1][col];
+                    int leftVal = dpDistance[row][col-1];
+                    int diagonalVal = dpDistance[row-1][col-1];
+                    dpDistance[row][col] = 1 + Math.min(diagonalVal, Math.min(leftVal, Math.min(leftVal, upperVal)));
                 }
             }
         }
