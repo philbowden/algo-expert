@@ -3,8 +3,20 @@ import java.util.*;
 class Program {
     public static void main(String[] args) {
         Program p = new Program();
-        int[] seats = {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-        System.out.println(p.bestSeat(seats));
+        int[] nums = {1, -1};
+        System.out.println(p.zeroSumSubarray(nums));
+    }
+
+    public boolean zeroSumSubarray(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        set.add(0);
+        int currentSum = 0;
+        for (int num : nums) {
+            currentSum += num;
+            if (set.contains(currentSum)) return true;
+            set.add(currentSum);
+        }
+        return false;
     }
 
 
@@ -14,7 +26,7 @@ class Program {
         for (int left = 0; left < seats.length; left++) {
             if (seats[left] == 1) {
                 int right = left + 1;
-                while(right < seats.length && seats[right] != 1) {
+                while (right < seats.length && seats[right] != 1) {
                     right++;
                 }
                 int currentSpace = right - left - 1;
